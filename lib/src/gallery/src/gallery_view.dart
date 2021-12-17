@@ -61,13 +61,13 @@ class GalleryViewWrapper extends StatefulWidget {
 
 class _GalleryViewWrapperState extends State<GalleryViewWrapper> {
   late GalleryController _controller;
-  late final PanelController _panelController;
+  late final PanelController panelController;
 
   @override
   void initState() {
     super.initState();
     _controller = widget.controller;
-    _panelController = _controller._panelController;
+    panelController = _controller.panelController;
   }
 
   @override
@@ -107,7 +107,7 @@ class _GalleryViewWrapperState extends State<GalleryViewWrapper> {
                       if (focusManager!.hasFocus) {
                         focusManager.unfocus();
                       }
-                      if (_panelController.isVisible) {
+                      if (panelController.isVisible) {
                         _controller._closePanel();
                       }
                     },
@@ -117,7 +117,7 @@ class _GalleryViewWrapperState extends State<GalleryViewWrapper> {
 
                 // Space for panel min height
                 ValueListenableBuilder<bool>(
-                  valueListenable: _panelController.panelVisibility,
+                  valueListenable: panelController.panelVisibility,
                   builder: (context, isVisible, child) {
                     return SizedBox(
                       height: !showKeyboard && isVisible ? _panelMinHeight : 0,
@@ -132,7 +132,7 @@ class _GalleryViewWrapperState extends State<GalleryViewWrapper> {
             // Gallery
             SlidablePanel(
               galleryController: _controller,
-              controller: _panelController,
+              controller: panelController,
               child: Builder(
                 builder: (_) => GalleryView(controller: _controller),
               ),
@@ -183,7 +183,7 @@ class GalleryView extends StatefulWidget {
 class _GalleryViewState extends State<GalleryView>
     with SingleTickerProviderStateMixin {
   late final GalleryController _controller;
-  late final PanelController _panelController;
+  late final PanelController panelController;
 
   late final AnimationController _animationController;
   late final Animation<double> _animation;
@@ -195,7 +195,7 @@ class _GalleryViewState extends State<GalleryView>
     super.initState();
     _controller = widget.controller ?? GalleryController();
 
-    _panelController = _controller._panelController;
+    panelController = _controller.panelController;
 
     _animationController = AnimationController(
       vsync: this,
@@ -216,7 +216,7 @@ class _GalleryViewState extends State<GalleryView>
   void _toogleAlbumList(bool isVisible) {
     if (_animationController.isAnimating) return;
     _controller._setAlbumVisibility(!isVisible);
-    _panelController.isGestureEnabled = _animationController.value == 1.0;
+    panelController.isGestureEnabled = _animationController.value == 1.0;
     if (_animationController.value == 1.0) {
       _animationController.reverse();
     } else {
@@ -301,10 +301,10 @@ class _GalleryViewState extends State<GalleryView>
       return true;
     }
 
-    final isPanelMax = _panelController.value.state == SlidingState.max;
+    final isPanelMax = panelController.value.state == SlidingState.max;
 
     if (!_controller.fullScreenMode && isPanelMax) {
-      _controller._panelController.minimizePanel();
+      _controller.panelController.minimizePanel();
       return false;
     }
 
@@ -363,7 +363,7 @@ class _GalleryViewState extends State<GalleryView>
                 }
 
                 return ValueListenableBuilder<SliderValue>(
-                  valueListenable: _panelController,
+                  valueListenable: panelController,
                   builder: (context, SliderValue value, child) {
                     final height = (_headerSetting.headerMinHeight +
                             (_headerSetting.headerMaxHeight -
@@ -393,7 +393,7 @@ class _GalleryViewState extends State<GalleryView>
               child: GalleryGridView(
                 controller: _controller,
                 entitiesNotifier: _controller._entitiesNotifier,
-                panelController: _controller._panelController,
+                panelController: _controller.panelController,
                 onCameraRequest: _controller.openCamera,
                 onSelect: _controller._select,
               ),
@@ -403,13 +403,13 @@ class _GalleryViewState extends State<GalleryView>
 
         // Send and edit button
 
-        GalleryAssetSelector(
-          controller: _controller,
-          onEdit: (e) {
-            _controller._openPlayground(context, e);
-          },
-          onSubmit: _controller.completeTask,
-        ),
+        // GalleryAssetSelector(
+        //   controller: _controller,
+        //   onEdit: (e) {
+        //     _controller._openPlayground(context, e);
+        //   },
+        //   onSubmit: _controller.completeTask,
+        // ),
 
         // Album list
         AnimatedBuilder(
@@ -600,7 +600,7 @@ class GalleryController extends ValueNotifier<GalleryValue> {
   })  : panelSetting = panelSetting ?? const PanelSetting(),
         headerSetting = headerSetting ?? const HeaderSetting(),
         setting = gallerySetting ?? const GallerySetting(),
-        _panelController = PanelController(),
+        panelController = PanelController(),
         _albumsNotifier = ValueNotifier(const BaseState()),
         _albumNotifier = ValueNotifier(const BaseState()),
         _entitiesNotifier = ValueNotifier(const BaseState()),
@@ -625,7 +625,7 @@ class GalleryController extends ValueNotifier<GalleryValue> {
   late final GallerySetting setting;
 
   /// Panel controller
-  final PanelController _panelController;
+  final PanelController panelController;
 
   /// Likk repository
   late final GalleryRepository _repository;
@@ -674,11 +674,11 @@ class GalleryController extends ValueNotifier<GalleryValue> {
       ValueNotifier(GalleryState.show);
 
   // ignore: public_member_api_docs
-  bool get isShowPanel => _panelController.isVisible;
+  bool get isShowPanel => panelController.isVisible;
 
   ///
   void _setAlbumVisibility(bool visible) {
-    _panelController.isGestureEnabled = !visible;
+    panelController.isGestureEnabled = !visible;
     _albumVisibility.value = visible;
   }
 
@@ -758,7 +758,7 @@ class GalleryController extends ValueNotifier<GalleryValue> {
       Navigator.of(context).pop(value.selectedEntities);
     } else {
       galleryState.value = GalleryState.hide;
-      _panelController.closePanel();
+      panelController.closePanel();
       // _checkKeyboard.value = false;
     }
     _onSubmitted?.call(value.selectedEntities);
@@ -771,7 +771,7 @@ class GalleryController extends ValueNotifier<GalleryValue> {
   void close([BuildContext? context]) {
     if (!_fullScreenMode) {
       galleryState.value = GalleryState.hide;
-      _panelController.closePanel();
+      panelController.closePanel();
       return;
     }
     if (context != null) {
@@ -782,7 +782,7 @@ class GalleryController extends ValueNotifier<GalleryValue> {
   /// When panel closed without any selection
   void _closePanel() {
     galleryState.value = GalleryState.hide;
-    _panelController.closePanel();
+    panelController.closePanel();
     final entities = (_clearedSelection || value.selectedEntities.isEmpty)
         ? <LikkEntity>[]
         : value.selectedEntities;
@@ -796,7 +796,7 @@ class GalleryController extends ValueNotifier<GalleryValue> {
   /// Close collapsable panel if camera is selected from inside gallery view
   void _closeOnCameraSelect() {
     galleryState.value = GalleryState.hide;
-    _panelController.closePanel();
+    panelController.closePanel();
     // _checkKeyboard.value = false;
     _internal = true;
     value = const GalleryValue();
@@ -912,7 +912,7 @@ class GalleryController extends ValueNotifier<GalleryValue> {
       });
     } else {
       _fullScreenMode = false;
-      _panelController.openPanel();
+      panelController.openPanel();
       FocusManager.instance.primaryFocus?.unfocus();
     }
     if (selectedEntities?.isNotEmpty ?? false) {
@@ -958,7 +958,7 @@ class GalleryController extends ValueNotifier<GalleryValue> {
 
   @override
   void dispose() {
-    if (_panelController.hasListeners) _panelController.dispose();
+    if (panelController.hasListeners) panelController.dispose();
     if (_albumsNotifier.hasListeners) _albumsNotifier.dispose();
     if (_albumNotifier.hasListeners) _albumNotifier.dispose();
     if (_entitiesNotifier.hasListeners) _entitiesNotifier.dispose();

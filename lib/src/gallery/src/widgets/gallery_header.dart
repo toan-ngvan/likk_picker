@@ -81,8 +81,9 @@ class _GalleryHeaderState extends State<GalleryHeader> {
                 // Details and controls
                 Expanded(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const SizedBox(width: 5),
+                      const SizedBox(width: 16),
                       // Close icon
                       _IconButton(
                         icon: _controller.headerSetting.headerLeftWidget,
@@ -99,6 +100,7 @@ class _GalleryHeaderState extends State<GalleryHeader> {
                         ),
                       ),
                       _controller.headerSetting.headerRightWidget,
+                      const SizedBox(width: 16),
                     ],
                   ),
                 ),
@@ -142,13 +144,15 @@ class _AnimatedDropdown extends StatelessWidget {
       builder: builder ??
           (context, album, child) {
             return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   album.data?.name ?? 'Unknown',
-                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
                 ),
                 TweenAnimationBuilder<double>(
                   tween: Tween(
@@ -218,7 +222,7 @@ class _IconButton extends StatelessWidget {
       final _icon = icon as IconData;
       iconWidget = Icon(
         _icon,
-        color: Colors.lightBlue.shade300,
+        color: const Color.fromRGBO(3, 126, 229, 1),
         size: size ?? 26.0,
       );
     }

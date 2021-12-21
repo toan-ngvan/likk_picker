@@ -75,10 +75,10 @@ class CameraOverlay extends StatelessWidget {
           ),
 
           // Playground controls
-          _PlaygroundOverlay(
-            controller: controller,
-            playgroundCntroller: playgroundCntroller,
-          ),
+          // _PlaygroundOverlay(
+          //   controller: controller,
+          //   playgroundCntroller: playgroundCntroller,
+          // ),
 
           //
         ],

@@ -42,12 +42,12 @@ class CameraOverlay extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           // preview, input type page view and camera
-          Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: CameraFooter(controller: controller),
-          ),
+          // Positioned(
+          //   bottom: 0.0,
+          //   left: 0.0,
+          //   right: 0.0,
+          //   child: CameraFooter(controller: controller),
+          // ),
 
           // Close button
           Positioned(

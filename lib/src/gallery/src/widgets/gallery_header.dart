@@ -76,7 +76,10 @@ class _GalleryHeaderState extends State<GalleryHeader> {
                   ? MediaQuery.of(context).padding.top
                   : 0),
         ),
-        color: Colors.white,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: headerSetting.borderRadius,
+        ),
         child: Stack(
           children: [
             // SizedBox(

@@ -56,8 +56,18 @@ class _GalleryHeaderState extends State<GalleryHeader> {
   Widget build(BuildContext context) {
     final headerSetting = _controller.headerSetting;
 
-    return ClipRRect(
-      borderRadius: headerSetting.borderRadius,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: headerSetting.borderRadius,
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, 0.4),
+            spreadRadius: 2,
+            blurRadius: 8,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
       child: Container(
         constraints: BoxConstraints(
           minHeight: headerSetting.headerMinHeight,
@@ -66,13 +76,14 @@ class _GalleryHeaderState extends State<GalleryHeader> {
                   ? MediaQuery.of(context).padding.top
                   : 0),
         ),
+        color: Colors.white,
         child: Stack(
           children: [
-            SizedBox(
-              width: double.infinity,
-              height: double.infinity,
-              child: headerSetting.headerBackground,
-            ),
+            // SizedBox(
+            //   width: double.infinity,
+            //   height: double.infinity,
+            //   child: headerSetting.headerBackground,
+            // ),
             Column(
               children: [
                 // Handler
@@ -272,7 +283,7 @@ class _Handler extends StatelessWidget {
           child: Container(
             width: controller.headerSetting.barSize.width,
             height: controller.headerSetting.barSize.height,
-            color: Colors.grey.shade700,
+            color: const Color.fromRGBO(186, 186, 186, 1),
           ),
         ),
       ),

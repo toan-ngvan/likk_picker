@@ -336,9 +336,10 @@ class _SelectionCount extends StatelessWidget {
                     child: secondChild,
                   )
                 : ColoredBox(
-                    color: (controller.setting.selectionCountBackgroundColor ??
-                            Theme.of(context).primaryColor)
-                        .withOpacity(0.2),
+                    // color: (controller.setting.selectionCountBackgroundColor ??
+                    //         Theme.of(context).primaryColor)
+                    //     .withOpacity(0.2),
+                    color: Colors.black45,
                     child: secondChild,
                   );
         return AppAnimatedCrossFade(

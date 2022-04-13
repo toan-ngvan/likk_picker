@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:path/path.dart' as p;
 
 import 'package:likk_picker/likk_picker.dart';
 import 'package:likk_picker/src/animations/animations.dart';
@@ -708,7 +709,14 @@ class GalleryController extends ValueNotifier<GalleryValue> {
   }
 
   /// Selecting and unselecting entities
-  void _select(LikkEntity entity, BuildContext context) {
+  Future<void> _select(LikkEntity entity, BuildContext context) async {
+    if (entity.entity.type == AssetType.video) {
+      final file = (await entity.entity.file)!;
+      final extension = p.extension(file.path).toLowerCase();
+      if (extension != '.mp4') {
+        return _onChanged?.call(entity, false);
+      }
+    }
     final selectedList = value.selectedEntities.toList();
     if (singleSelection) {
       _clearedSelection = false;

@@ -710,8 +710,10 @@ class GalleryController extends ValueNotifier<GalleryValue> {
 
   /// Selecting and unselecting entities
   Future<void> _select(LikkEntity entity, BuildContext context) async {
+    final file = (await entity.entity.file)!;
+    final size = await file.length();
+    if (size > 25000000) return _onChanged?.call(entity, false);
     if (entity.entity.type == AssetType.video) {
-      final file = (await entity.entity.file)!;
       final extension = p.extension(file.path).toLowerCase();
       if (extension != '.mp4') {
         return _onChanged?.call(entity, false);

@@ -141,13 +141,13 @@ class _Album extends StatelessWidget {
                 width: imageSize.toDouble(),
                 color: Colors.grey,
                 child: FutureBuilder<List<AssetEntity>>(
-                  future: entity.getAssetListPaged(0, 1),
+                  future: entity.getAssetListPaged(page: 0, size: 1),
                   builder: (context, listSnapshot) {
                     if (listSnapshot.connectionState == ConnectionState.done &&
                         (listSnapshot.data?.isNotEmpty ?? false)) {
                       return FutureBuilder<Uint8List?>(
-                        future: listSnapshot.data!.first.thumbDataWithSize(
-                            imageSize.toInt() * 5, imageSize.toInt() * 5),
+                        future: listSnapshot.data!.first.thumbnailDataWithSize(
+                            ThumbnailSize.square(imageSize.toInt() * 5)),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                                   ConnectionState.done &&

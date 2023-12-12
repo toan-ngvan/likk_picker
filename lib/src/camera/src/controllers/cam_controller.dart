@@ -276,7 +276,7 @@ class CamController extends ValueNotifier<ActionValue> {
         value = value.copyWith(isRecordingVideo: false);
 
         if (entity != null) {
-          final d = await entity.thumbData;
+          final d = await entity.thumbnailData;
           final likkEntity = LikkEntity(entity: entity, bytes: d!);
           await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
           _uiHandler.pop<LikkEntity>(likkEntity);

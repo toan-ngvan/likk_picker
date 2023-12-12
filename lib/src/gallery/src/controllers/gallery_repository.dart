@@ -73,7 +73,9 @@ class GalleryRepository {
       // Update selected album
       albumNotifier.value = BaseState(data: album, hasPermission: true);
 
-      final entities = await album?.assetList ?? <AssetEntity>[];
+      final entities = await album?.getAssetListRange(
+              start: 0, end: await album.assetCountAsync) ??
+          <AssetEntity>[];
       // Update selected album entities list
       entitiesNotifier.value = BaseState(data: entities, hasPermission: true);
     } catch (e) {
@@ -106,7 +108,8 @@ class GalleryRepository {
     final state = await PhotoManager.requestPermissionExtend();
     if (state == PermissionState.authorized) {
       try {
-        final entities = await album.assetList;
+        final entities = await album.getAssetListRange(
+            start: 0, end: await album.assetCountAsync);
         entitiesNotifier.value = BaseState(data: entities, hasPermission: true);
         recentEntitiesNotifier.value =
             BaseState(data: entities, hasPermission: true);
@@ -175,15 +178,13 @@ class BaseState<T> {
 extension RequestTypeExtension on RequestType {
   ///
   AssetType get assetType {
-    switch (this) {
-      case RequestType.image:
-        return AssetType.image;
-      case RequestType.video:
-        return AssetType.video;
-      case RequestType.audio:
-        return AssetType.audio;
-      default:
-        return AssetType.other;
+    if (this == RequestType.image) {
+      return AssetType.image;
+    } else if (this == RequestType.video) {
+      return AssetType.video;
+    } else if (this == RequestType.audio) {
+      return AssetType.audio;
     }
+    return AssetType.other;
   }
 }

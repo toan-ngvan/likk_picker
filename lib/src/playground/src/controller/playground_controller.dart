@@ -120,7 +120,7 @@ class PlaygroundController extends ValueNotifier<PlaygroundValue> {
         final image = await boundary.toImage();
         final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
         final data = byteData!.buffer.asUint8List();
-        final entity = await PhotoManager.editor.saveImage(data);
+        final entity = await PhotoManager.editor.saveImage(data, title: 'temp');
         // await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
         return LikkEntity(entity: entity!, bytes: data);
       }

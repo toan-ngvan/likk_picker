@@ -40,9 +40,11 @@ class GalleryRecentPreview extends StatelessWidget {
         child: ColoredBox(
           color: Colors.white,
           child: FutureBuilder<Uint8List?>(
-            future: entity.thumbDataWithSize(
-              width?.toInt() ?? 100,
-              height?.toInt() ?? 100,
+            future: entity.thumbnailDataWithSize(
+              ThumbnailSize(
+                width?.toInt() ?? 100,
+                height?.toInt() ?? 100,
+              ),
             ),
             builder: (context, snapshot) {
               if (snapshot.connectionState != ConnectionState.done ||

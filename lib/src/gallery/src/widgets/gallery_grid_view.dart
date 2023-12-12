@@ -169,7 +169,7 @@ class _MediaTile extends StatelessWidget {
     return ColoredBox(
       color: Colors.grey.shade800,
       child: FutureBuilder<Uint8List?>(
-        future: entity?.thumbDataWithSize(400, 400),
+        future: entity?.thumbnailDataWithSize(ThumbnailSize.square(400)),
         builder: (context, snapshot) {
           final hasData = snapshot.connectionState == ConnectionState.done &&
               snapshot.data != null;
